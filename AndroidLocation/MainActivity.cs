@@ -7,6 +7,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Locations;
 using Android.Hardware;
+using System.Collections.Generic;
 
 namespace AndroidLocation
 {
@@ -15,7 +16,8 @@ namespace AndroidLocation
     {
         LocationManager locMgr;
         SensorManager sensorMgr;
-        Sensor orientationSensor;
+        Sensor accelerometer;
+        Sensor magnetometer;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -29,6 +31,8 @@ namespace AndroidLocation
 
             sensorMgr = (SensorManager)GetSystemService(Context.SensorService);
 
+            accelerometer = sensorMgr.GetDefaultSensor(SensorType.Accelerometer);
+            magnetometer = sensorMgr.GetDefaultSensor(SensorType.MagneticField);
         }
 
         protected override void OnResume()
@@ -55,8 +59,8 @@ namespace AndroidLocation
             }
 
 
-            orientationSensor = sensorMgr.GetDefaultSensor(SensorType.Orientation);
-            sensorMgr.RegisterListener(this, orientationSensor, SensorDelay.Ui);
+            sensorMgr.RegisterListener(this, accelerometer, SensorDelay.Ui);
+            sensorMgr.RegisterListener(this, magnetometer, SensorDelay.Ui);
 
         }
 
@@ -105,10 +109,37 @@ namespace AndroidLocation
         {
         }
 
+        List<float> gravity = new List<float>();
+        List<float> magnet = new List<float>();
         public void OnSensorChanged(SensorEvent e)
         {
-            ImageView arrowImageView = FindViewById<ImageView>(Resource.Id.arrowImageView);
-            arrowImageView.Rotation = e.Values[0];
+            if (e.Sensor.Type == SensorType.MagneticField)
+            {
+                magnet.Clear();
+                magnet.AddRange(e.Values);
+            }
+            if (e.Sensor.Type == SensorType.Accelerometer)
+            {
+                gravity.Clear();
+                gravity.AddRange(e.Values);
+            }
+
+            if (magnet.Count > 0 && gravity.Count > 0)
+            {
+                float[] R = new float[9];
+                float[] I = new float[9];
+                bool worked = SensorManager.GetRotationMatrix(R, I, gravity.ToArray(), magnet.ToArray());
+
+                if (worked)
+                {
+                    float[] orientation = new float[3];
+                    SensorManager.GetOrientation(R, orientation);
+
+                    ImageView arrowImageView = FindViewById<ImageView>(Resource.Id.arrowImageView);
+                    float azimuth = orientation[0] * 180 / (float)Math.PI; //convert to degrees
+                    arrowImageView.Rotation = azimuth;
+                }
+            }
         }
     }
 }
