@@ -2,6 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:minWidth="25px"
-    android:minHeight="25px" />
+    android:layout_height="fill_parent">
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/currentLocationTextView" />
+    <Button
+        android:text="Show Bearing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/showBearingButton" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/locationStatusTextView" />
+    <ImageView
+        android:src="@drawable/arrow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/arrowImageView" />
+</LinearLayout>

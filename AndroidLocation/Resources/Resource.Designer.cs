@@ -45,10 +45,13 @@ namespace AndroidLocation
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int arrow = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int monoandroidsplash = 2130837505;
+			public const int Icon = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int monoandroidsplash = 2130837506;
 			
 			static Drawable()
 			{
@@ -56,6 +59,31 @@ namespace AndroidLocation
 			}
 			
 			private Drawable()
+			{
+			}
+		}
+		
+		public partial class Id
+		{
+			
+			// aapt resource value: 0x7f060003
+			public const int arrowImageView = 2131099651;
+			
+			// aapt resource value: 0x7f060000
+			public const int currentLocationTextView = 2131099648;
+			
+			// aapt resource value: 0x7f060002
+			public const int locationStatusTextView = 2131099650;
+			
+			// aapt resource value: 0x7f060001
+			public const int showBearingButton = 2131099649;
+			
+			static Id()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Id()
 			{
 			}
 		}
